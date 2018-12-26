@@ -1,9 +1,11 @@
 <template>
-  $END$
+  <div>
+    <h3>main page</h3>
+  </div>
 </template>
 <script>
   export default {
-    name: "HomePage"
+    name: 'HomePage'
   }
 </script>
 <style scoped>
