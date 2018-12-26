@@ -6,6 +6,9 @@
 <script>
   export default {
     name: 'test',
+    data () {
+      return {}
+    },
     methods: {
       test () {
         this.$store.dispatch('setError', 'Ошибка!')
