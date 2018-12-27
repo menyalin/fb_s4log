@@ -3,7 +3,7 @@
     <v-snackbar
       dark
       v-model="snackbar"
-      color="warning"
+      color="info"
       :multi-line="true"
       :timeout="errorTimeOut">
       {{ error }}

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn dark @click="test">button</v-btn>
+    <v-btn dark @click="test" :loading="loading" :disabled="loading">button</v-btn>
   </div>
 </template>
 <script>
@@ -11,10 +11,14 @@
     },
     methods: {
       test () {
-        this.$store.dispatch('setError', 'Ошибка!')
+        this.$store.dispatch('getDataTest')
       }
     },
-    computed: {}
+    computed: {
+      loading() {
+        this.$store.getters.loading
+      }
+    }
   }
 </script>
 <style scoped>

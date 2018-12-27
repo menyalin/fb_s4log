@@ -1,8 +1,11 @@
+import db from '../db'
+
 export default {
   state: {
     errorTimeOut: 3500,
     error: null,
-    appLoading: false
+    appLoading: false,
+    loading: false
   },
   mutations: {
     setError (state, payload) {
@@ -13,12 +16,14 @@ export default {
     },
     setAppLoading (state, payload) {
       state.appLoading = payload
+    },
+    setLoading (state, payload) {
+      state.loading = payload
     }
   },
   actions: {
     setError ({commit}, payload) {
       commit('setError', payload)
-
       setTimeout(() => {
         commit('clearError')
       }, this.getters.errorTimeOut + 700)
@@ -32,10 +37,13 @@ export default {
       return state.appLoading
     },
     error (state) {
-      return state.error
+      return state.error || false
     },
     errorTimeOut (state) {
       return state.errorTimeOut
+    },
+    loading (state) {
+      return state.loading
     }
   }
 }

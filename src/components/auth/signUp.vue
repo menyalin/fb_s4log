@@ -5,7 +5,7 @@
         <v-form>
           <v-card class="elevation-12">
             <v-toolbar dark>
-              <v-toolbar-title>Login form</v-toolbar-title>
+              <v-toolbar-title>Registration form</v-toolbar-title>
               <v-spacer/>
             </v-toolbar>
             <v-card-text>
@@ -13,9 +13,9 @@
               <v-text-field prepend-icon="lock" label="Password" v-model="password" type="password"/>
             </v-card-text>
             <v-card-actions>
-              <router-link to="/auth/signUp">Регистрация</router-link>
+              <router-link to="/auth/login">Войти в систему</router-link>
               <v-spacer/>
-              <v-btn color="primary" @click="submit" :loading="loading" :disabled="loading">Login</v-btn>
+              <v-btn color="primary" @click="submit" :loading="loading" :disabled="loading && error">SignUp</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -25,7 +25,7 @@
 </template>
 <script>
   export default {
-    name: 'Login',
+    name: 'Registration',
     data () {
       return {
         email: '',
@@ -34,9 +34,9 @@
     },
     methods: {
       submit () {
-        this.$store.dispatch('login', {email: this.email, password: this.password})
+        this.$store.dispatch('signUp', {email: this.email, password: this.password})
           .then(() => {
-            if (this.loggedIn){
+            if (this.loggedIn) {
               this.$router.push('/')
             }
           })
@@ -48,6 +48,9 @@
       },
       loggedIn () {
         return this.$store.getters.loggedIn
+      },
+      error () {
+        return this.$store.getters.error
       }
     }
   }

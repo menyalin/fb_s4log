@@ -1,6 +1,5 @@
 import firebase from '../firebase'
 
-
 export default {
   state: {
     user: null,
@@ -8,20 +7,68 @@ export default {
   },
   mutations: {
     setUser (state, payload) {
-
       state.user = payload
+      state.loggedIn = true
+    },
+    logout (state) {
+      state.user = null
+      state.loggedIn = false
     }
   },
   actions: {
-    async login ({commit}) {
+    async signUp ({commit, dispatch}, {email, password}) {
       try {
-        const { user } = await firebase.auth().signInWithEmailAndPassword('menyalin@gmail.com', '111111')
-        console.log(user)
-        commit('setUser', user)
+        commit('clearError')
+        commit('setLoading', true)
+        const {data} = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        console.log(data)
+        commit('setLoading', false)
       } catch (e) {
-        commit('setError', e.message || e.code)
+        dispatch('setError', e)
+        commit('setLoading', false)
+      }
+    },
+    async login ({commit, dispatch}, {email, password}) {
+      try {
+        commit('clearError')
+        commit('setLoading', true)
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        commit('setLoading', false)
+      } catch (e) {
+        dispatch('setError', e.message || e.code)
+        commit('setLoading', false)
+      }
+    },
+    async logout ({commit, dispatch}) {
+      try {
+        commit('clearError')
+        commit('setLoading', true)
+        await firebase.auth().signOut()
+        commit('logout')
+        commit('setLoading', false)
+      } catch (e) {
+        dispatch('setError', e.message || e.code)
+        commit('setLoading', false)
+      }
+    },
+    async authStateChanged ({commit, dispatch}) {
+      try {
+        commit('clearError')
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            commit('setUser', user)
+          }
+          commit('setLoading', false)
+        })
+      } catch (e) {
+        dispatch('setError', e.message || e.code)
+        commit('setLoading', false)
       }
     }
   },
-  getters: {}
+  getters: {
+    loggedIn (state) {
+      return state.loggedIn
+    }
+  }
 }
