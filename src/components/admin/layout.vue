@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid pa-0>
+  <v-container fluid pa-0 fill-height>
     <v-layout row>
       <v-flex xs2>
         <v-navigation-drawer permanent>
