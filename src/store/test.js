@@ -8,8 +8,10 @@ export default {
     async getDataTest ({commit}) {
       try {
         commit('setLoading', true)
-        const docs = await db.collection('regions').get()
-        console.log(docs)
+        const querySnapshot = await db.collection('regions').get()
+        querySnapshot.forEach(item => {
+          console.log(item.data(), item.id)
+        })
         commit('setLoading', false)
       } catch (e) {
         commit('setError', e.message || e.code)

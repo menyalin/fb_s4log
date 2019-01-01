@@ -22,7 +22,8 @@ export default {
   },
   mutations: {
     deleteRegion (state, id) {
-      let pos = state.regions.map(item => item._id === id)
+      let pos = state.regions.indexOf(item => item._id === id)
+      console.log
       state.regions.splice(pos, 1)
     }
   },

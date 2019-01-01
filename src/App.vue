@@ -6,7 +6,7 @@
     <div v-else>
       <app-navbar/>
       <v-content>
-        <v-container>
+        <v-container fluid>
           <router-view/>
         </v-container>
       </v-content>

@@ -14,7 +14,7 @@
     </v-layout>
     <v-divider/>
     <v-layout row class="pt-2">
-      <v-flex sm8 offset-sm1>
+      <v-flex sm10 offset-sm1>
         <v-card>
           <v-card-title class="regions-table">
             <div><h4>_id</h4></div>
