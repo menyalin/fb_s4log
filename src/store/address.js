@@ -1,39 +1,47 @@
-import firebase from "../firebase";
+import db from '../db'
 
 export default {
   state: {
-    regions: [
-      {_id: 1, group: 'Москва и МО', region: 'Люберцы, МО'},
-      {_id: 2, group: 'Москва и МО', region: 'Родники. Раменский р-н'},
-      {_id: 3, group: 'Центр', region: 'Липецк'},
-      {_id: 4, group: 'Москва и МО', region: 'Москва'},
-      {_id: 5, group: 'Поволжье', region: 'Саранск'},
-      {_id: 6, group: 'Поволжье', region: 'Пенза'},
-      {_id: 7, group: 'Поволжье', region: 'Казань'},
-      {_id: 8, group: 'Урал', region: 'Екатеринбург'},
-      {_id: 9, group: 'Урал', region: 'Челябинск'},
-      {_id: 10, group: 'Урал', region: 'Первоуральск'},
-      {_id: 11, group: 'Центр', region: 'Тверь'},
-      {_id: 12, group: 'Северо-Запад', region: 'Санкт-Петербург'},
-      {_id: 13, group: 'Северо-Запад', region: 'Петрозаводск'},
-      {_id: 14, group: 'Сибирь', region: 'Новосибирск'},
-      {_id: 15, group: 'Юг', region: 'Астрахань'},
-    ]
+    regions: []
   },
   mutations: {
     deleteRegion (state, id) {
-      let pos = state.regions.indexOf(item => item._id === id)
-      console.log
-      state.regions.splice(pos, 1)
+      const pos = state.regions.findIndex((item) => item.id === id)
+      if (pos !== -1) {
+        state.regions.splice(pos, 1)
+      }
+    },
+    setRegions (state, regionsArray) {
+      state.regions = regionsArray
     }
   },
   actions: {
-    async deleteRegion ({commit, dispatch}, id) {
+    async deleteRegion ({ commit, dispatch }, id) {
       try {
         commit('clearError')
         commit('setLoading', true)
-        // --------Асинхронное удаление из БД -------------
+        await db.collection('regions').doc(id).delete()
         commit('deleteRegion', id)
+        commit('setLoading', false)
+      } catch (e) {
+        dispatch('setError', e)
+        commit('setLoading', false)
+      }
+    },
+    async getAllRegions ({ commit, dispatch }) {
+      try {
+        commit('clearError')
+        commit('setLoading', true)
+        let tmpArr = []
+        const querySnapshot = await db.collection('regions').get()
+        querySnapshot.forEach(item => {
+          tmpArr.push({
+            id: item.id,
+            group: item.data().group,
+            region: item.data().region
+          })
+        })
+        commit('setRegions', tmpArr)
         commit('setLoading', false)
       } catch (e) {
         dispatch('setError', e)
@@ -44,17 +52,21 @@ export default {
   getters: {
     allRegions: state => filters => {
       return state.regions
-        .filter((item) => {
-          if (filters.group === 'Все') {
-            return true
-          } else {
-            return item.group === filters.group
-          }
-        })
-        .sort((a, b) => {
-          if (a.region > b.region) return 1 * filters.regionOrder
-          if (a.region < b.region) return -1 * filters.regionOrder
-        })
+      .filter(item => {
+        if (!filters.searchText) return true
+        else return item.region.toLowerCase().indexOf(filters.searchText.toLowerCase()) !== -1
+      })
+      .filter((item) => {
+        if (filters.group === 'Все') {
+          return true
+        } else {
+          return item.group === filters.group
+        }
+      })
+      .sort((a, b) => {
+        if (a.region > b.region) return 1 * filters.regionOrder
+        if (a.region < b.region) return -1 * filters.regionOrder
+      })
     },
     regionGroups (state) {
       let tmp_obj = {}

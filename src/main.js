@@ -27,6 +27,7 @@ new Vue({
   store,
   created () {
     this.$store.dispatch('authStateChanged')
+    this.$store.dispatch('getAllRegions')
   },
   render: h => h(App)
 }).$mount('#app')

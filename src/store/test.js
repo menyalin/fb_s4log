@@ -5,13 +5,10 @@ export default {
   state: {},
   mutations: {},
   actions: {
-    async getDataTest ({commit}) {
+    async getDataTest ({ commit }) {
       try {
         commit('setLoading', true)
-        const querySnapshot = await db.collection('regions').get()
-        querySnapshot.forEach(item => {
-          console.log(item.data(), item.id)
-        })
+        await db.collection('regions').doc().set({group: 'Юг', region: 'Астрахань'})
         commit('setLoading', false)
       } catch (e) {
         commit('setError', e.message || e.code)
