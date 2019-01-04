@@ -6,11 +6,11 @@
 <script>
   export default {
     name: 'test',
-    data () {
+    data() {
       return {}
     },
     methods: {
-      test () {
+      test() {
         this.$store.dispatch('getDataTest')
       }
     },
