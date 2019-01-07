@@ -6,10 +6,12 @@ import Login from '@/components/auth/login'
 import SignUp from '@/components/auth/signUp'
 import AdminLayout from '@/components/admin/layout'
 import Regions from '@/components/admin/regions'
+import Account from '@/components/auth/account'
+import Store from './store'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -30,11 +32,31 @@ export default new Router({
       component: SignUp
     },
     {
+      path: '/account',
+      component: Account,
+      meta: {
+        authRequired: true
+      }
+    },
+    {
       path: '/admin',
       component: AdminLayout,
-      children:[
-        {path:'regions', component: Regions}
+      children: [
+        {path: 'regions', component: Regions}
       ]
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  Store.dispatch('authInit')
+    .then(user => {
+      if (to.matched.some(route => route.meta.authRequired)) {
+        user ? next() : next('/auth/login')
+      } else {
+        next()
+      }
+    })
+})
+
+export default router

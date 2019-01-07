@@ -37,7 +37,7 @@
               <div>{{region.region}}</div>
               <div>{{region.group}}</div>
               <div>
-                <v-icon class="mr-2" @click="">edit</v-icon>
+                <app-region-modal :regionId="region.id"/>
                 <v-icon @click="deleteRegion(region.id)">delete</v-icon>
               </div>
             </div>
