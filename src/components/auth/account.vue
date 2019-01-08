@@ -13,9 +13,23 @@
         <v-container fluid>
           <v-layout row class="align-center">
             <v-flex>
-              <h2>Компании:</h2></v-flex>
-            <v-flex class="right">
+              <h2>Компании:</h2>
+            </v-flex>
+            <v-flex class="text-xs-right">
               <app-new-partner-modal/>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex>
+              <v-card v-for="partner in partners" class="ma-1" :key="partner.id">
+                <v-card-title class="headline">
+                  {{ partner.shortName }}
+                </v-card-title>
+                <v-card-actions>
+                  <v-btn>Кнопка</v-btn>
+                </v-card-actions>
+
+              </v-card>
             </v-flex>
           </v-layout>
         </v-container>
@@ -37,6 +51,9 @@
     computed: {
       user() {
         return this.$store.getters.user
+      },
+      partners() {
+        return this.$store.getters.partners
       }
     },
     methods: {

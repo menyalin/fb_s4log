@@ -15,7 +15,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" flat @click="dialog = false">Отмена</v-btn>
-          <v-btn color="green darken-1" flat @click="dialog = false">Создать</v-btn>
+          <v-btn color="green darken-1" flat @click="create">Создать</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -24,6 +24,11 @@
 <script>
   export default {
     name: "newPartner",
+    methods: {
+      create () {
+        this.$store.dispatch('createPartner', {})
+      }
+    },
     data () {
       return {
         dialog: false,
