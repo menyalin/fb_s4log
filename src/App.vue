@@ -6,7 +6,7 @@
     <div v-else>
       <app-navbar/>
       <v-content>
-        <v-container fluid>
+        <v-container fluid fill-height>
           <router-view/>
         </v-container>
       </v-content>
@@ -26,10 +26,10 @@
       appErrorSnackbar
     },
     computed: {
-      appLoading () {
+      appLoading() {
         return this.$store.getters.appLoading
       },
-      error () {
+      error() {
         return this.$store.getters.error
       }
     }

@@ -7,6 +7,10 @@ import SignUp from '@/components/auth/signUp'
 import AdminLayout from '@/components/admin/layout'
 import Regions from '@/components/admin/regions'
 import Account from '@/components/auth/account'
+import PartnerDetailInfo from '@/components/auth/partnerDetailInfo'
+import chatLayout from "./components/chat/chatLayout";
+
+
 import Store from './store'
 
 Vue.use(Router)
@@ -39,11 +43,23 @@ let router = new Router({
       }
     },
     {
+      path: '/partner/:id',
+      component: PartnerDetailInfo,
+      props: true,
+      meta: {
+        authRequired: true
+      }
+    },
+    {
       path: '/admin',
       component: AdminLayout,
       children: [
         {path: 'regions', component: Regions}
       ]
+    },
+    {
+      path: '/chat',
+      component: chatLayout,
     }
   ]
 })

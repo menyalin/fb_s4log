@@ -1,6 +1,6 @@
 import db from '../db'
 import firebase from "../firebase"
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default {
   state: {
@@ -9,6 +9,9 @@ export default {
   mutations: {
     updatePartners(state, payload) {
       Vue.set(state.partners, payload.id, payload.data())
+    },
+    addPartner (state, payload) {
+      Vue.set(state.partners, payload.id, payload.data)
     }
 
   },
@@ -27,11 +30,22 @@ export default {
           commit('updatePartners', doc)
         })
       } catch (e) {
-        console.log(e)
         dispatch('setError', e)
         commit('setLoading', false)
       }
-
+    },
+    async createPartner ({dispatch, commit}, payload) {
+      try {
+        commit('setLoading', true)
+        commit('setLoading', false)
+        const user = await firebase.auth().currentUser
+        payload.users = [user.uid]
+        const res = await db.collection('partners').add(payload)
+        commit("addPartner", {id: res.id, data: payload})
+      } catch (e) {
+        dispatch('setError', e.message || e.code)
+        commit('setLoading', false)
+      }
     }
 
   },
@@ -39,6 +53,5 @@ export default {
     partners(state) {
       return state.partners
     }
-
   }
 }

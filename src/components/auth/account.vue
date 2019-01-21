@@ -21,12 +21,13 @@
           </v-layout>
           <v-layout row>
             <v-flex>
-              <v-card v-for="partner in partners" class="ma-1" :key="partner.id">
+              <v-card v-for="(partner, key) in partners" class="ma-1" :key="key">
                 <v-card-title class="headline">
                   {{ partner.shortName }}
+                  {{ partner}}
                 </v-card-title>
                 <v-card-actions>
-                  <v-btn>Кнопка</v-btn>
+                  <v-btn :to="'/partner/'+ key">Открыть</v-btn>
                 </v-card-actions>
 
               </v-card>
@@ -57,6 +58,9 @@
       }
     },
     methods: {
+      partnerUrl(id) {
+        return `/partner/${id}`
+      },
       emailVerified() {
         if (!this.user.emailVerified) {
           this.$store.dispatch('emailVerified')
