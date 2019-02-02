@@ -5,6 +5,7 @@ import CommonStore from './common'
 import TestStore from './test'
 import AddressStore from './address'
 import partnerStore from './partner'
+import orderStore from './orders'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
    UserStore,
    CommonStore,
    AddressStore,
-   partnerStore
+   partnerStore,
+   orderStore
  }
 })

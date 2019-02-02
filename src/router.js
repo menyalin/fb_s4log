@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Store from './store'
 import HomePage from '@/components/HomePage'
 import Test from '@/components/admin/test'
 import Login from '@/components/auth/login'
@@ -8,10 +9,9 @@ import AdminLayout from '@/components/admin/layout'
 import Regions from '@/components/admin/regions'
 import Account from '@/components/auth/account'
 import PartnerDetailInfo from '@/components/auth/partnerDetailInfo'
-import chatLayout from "./components/chat/chatLayout";
-
-
-import Store from './store'
+import chatLayout from "./components/chat/chatLayout"
+import SystemLayout from './components/system/systemLayout'
+import importOrders from "./components/system/orders/importOrders";
 
 Vue.use(Router)
 
@@ -60,6 +60,13 @@ let router = new Router({
     {
       path: '/chat',
       component: chatLayout,
+    },
+    {
+      path: '/system',
+      component: SystemLayout,
+      children: [
+        {path: 'importOrders', component: importOrders}
+      ]
     }
   ]
 })
