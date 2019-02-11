@@ -1,11 +1,10 @@
 <template>
 <v-container fluid>
   <v-layout row wrap>
-    <v-flex>
+    <v-flex style="max-width: 320px;">
       <app-system-navigation/>
     </v-flex>
     <v-flex>
-      Вывод основной информации
       <router-view/>
     </v-flex>
   </v-layout>
