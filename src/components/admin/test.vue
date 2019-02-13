@@ -1,40 +1,28 @@
 <template>
-  <div>
-    <v-btn dark @click="test" :loading="loading" :disabled="loading">upload</v-btn>
-    <input type="file" ref="p" @change="test2">
-    <div>
-      {{ ordersArray[0] }}
-    </div>
-  </div>
+    <v-container fluid pa-0>
+      <v-layout row wrap>
+        <v-flex>
+          <app-tmp-order-row :header='true'/>
+          <app-tmp-order-row/>
+          <app-tmp-order-row/>
+        </v-flex>
+        </v-layout>
+    </v-container>
 </template>
+
 <script>
-import XLSX from "xlsx";
-import { dateParse } from "../common/utils";
+import tmpOrderRow from './tmpOrderRow.vue'
 
 export default {
   name: "test",
+  components: {
+    appTmpOrderRow: tmpOrderRow
+  },
   data() {
-    return {
-      ordersArray: []
-    };
+    return {}
   },
   methods: {
-    test() {
-      
-    },
-    test2() {
-      let reader = new FileReader();
-      let inputFile = this.$refs.p.files[0];
-      reader.onload = event => {
-        let res = event.target.result;
-        const wb = XLSX.read(res, { type: "array" });
-        this.ordersArray = XLSX.utils.sheet_to_json(
-          wb.Sheets[wb.SheetNames[0]]
-        );
-        this.$store.dispatch('')
-      };
-      reader.readAsArrayBuffer(inputFile);
-    }
+    test() {}
   },
   computed: {
     loading() {
