@@ -1,10 +1,10 @@
 <template>
-    <v-container fluid pa-0>
+    <v-container fluid pa-0> 
       <v-layout row wrap>
         <v-flex>
           <app-tmp-order-row :header='true'/>
-          <app-tmp-order-row/>
-          <app-tmp-order-row/>
+          <app-tmp-order-row v-for="order in tmpOrdersArray" :key="order._id" :order='order'/>
+         
         </v-flex>
         </v-layout>
     </v-container>
@@ -19,14 +19,16 @@ export default {
     appTmpOrderRow: tmpOrderRow
   },
   data() {
-    return {}
+    return {
+     
+    }
   },
   methods: {
     test() {}
   },
   computed: {
-    loading() {
-      this.$store.getters.loading;
+    tmpOrdersArray() {
+      return this.$store.getters.tmpOrdersArray;
     }
   }
 };

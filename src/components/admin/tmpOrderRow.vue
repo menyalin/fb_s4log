@@ -1,57 +1,108 @@
 <template>
   <div>
-    <v-card class="tmpOrderWrapper ma-1" :hover="!isHeader">
-      <div class="toggle-icon">
-        <v-icon v-if="!isHeader" color="primary">check_box</v-icon>
-        <v-icon color="primary" v-else></v-icon>
-      </div>
-      <div>{{isHeader ? 'Статус': 'Новый'}}</div>
-      <div>
-        <v-icon small v-if="!isHeader">done</v-icon>
-      </div>
-      <div>{{ isHeader ? 'Способ доставки' : 'Авто' }}</div>
-      <div class="num">{{ isHeader ? 'Заказ' : '21213' }}</div>
-      <div class="num">{{ isHeader ? 'Заказ EDI': 'YB1232234'}}</div>
-      <div>{{ isHeader ? 'Загрузка': '12.02.2019' }}</div>
-      <div>{{ isHeader ? 'Доставка' : '16.02.2019 09:00' }}</div>
-      <div>{{ isHeader ? 'Покупатель' : 'AO Тандер (2123433221)'}}</div>
-      <div>{{ isHeader ? 'Адрес доставки' : 'Волгоградская область, р.п. Ерзовка'}}</div>
-      <div>{{ isHeader ? 'Направление': '(РЦ Ерзовка) вт,пт'}}</div>
-      <div class="weight">{{isHeader ? 'Вес (плт), %' : '17,34тн (26), 23%' }}</div>
-      <div>{{ isHeader ? 'Менеджер': 'Адаптер ЭДО'}}</div>
-    </v-card>
+    <div>
+      <v-container fluid pa-0 ma-2>
+        <v-layout row wrap justify-start class="selected"> 
+          <v-flex xs12 lg3 class="item_1">
+                <div class="toggle-icon">
+                  <div v-if='!isHeader' @click='selectToggle'>
+                    <v-icon v-if='order.selected'>check_box</v-icon>
+                    <v-icon v-if='!order.selected'>check_box_outline_blank</v-icon>
+                  </div>  
+                </div>
+                <div>{{isHeader ? 'Статус': order.status}}</div>
+                <div>
+                  <v-icon small v-if="!isHeader && order.searchCar">done</v-icon>
+                </div>
+                <div>{{ isHeader ? 'Способ доставки' : order.method }}</div>
+                <div class="num">{{ isHeader ? 'Заказ' : order.num }}</div>
+                <div class="num">{{ isHeader ? 'Заказ EDI': order.numEDI}}</div>
+          </v-flex>
+          <v-flex xs5 lg3 offset-xs-1 class="item_2">
+              <div>{{ isHeader ? 'Загрузка': this.dateShipping }}</div>
+              <div>{{ isHeader ? 'Доставка' : this.dateDelivery + '  09:00' }}</div> 
+              <div>{{ isHeader ? 'Покупатель' : order.customer }}</div>
+          </v-flex>
+        
+          <v-flex xs12 lg4 class="item_4">
+            <div>{{ isHeader ? 'Адрес доставки' : order.address }}</div>
+            <div>{{ isHeader ? 'Направление': order.way }}</div>
+          </v-flex>
+          <v-flex xs12 lg2 class="item_5">
+                <div class="weight">{{isHeader ? 'Вес (плт), %' : '17,34тн (26), 23%' }}</div>
+                <div>{{ isHeader ? 'Менеджер': order.manager}}</div>
+          </v-flex>
+        </v-layout>
+    
+      </v-container>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["header"],
+  props: ["header", "order"],
   data() {
     return {};
   },
   computed: {
     isHeader() {
       return !!this.header;
+    },
+    dateShipping() {
+      return this.order.dateShipping.toLocaleDateString("ru");
+    },
+    dateDelivery() {
+      return this.order.dateDelivery.toLocaleDateString("ru");
+    }
+  },
+  methods: {
+    selectToggle() {
+      this.$store.commit("toggleSelectorTmpOrder", this.order._id);
+    },
+    testMethod() {
+      console.log(1)
     }
   }
 };
 </script>
 
 <style scoped>
-@media (min-width: 600px) {
-  .tmpOrderWrapper {
-    background-color: aqua;
-  }
-}
-.tmpOrderWrapper {
+.item_1 {
   display: grid;
-  grid-template-columns: 2em 5em 1em 4em 5em 6em 5.5em 2fr 3fr 5fr 2fr 10em 2fr;
-  grid-column-gap: 1px;
+  grid-template-columns: 1fr 2fr 1em 2fr 2fr 4fr;
+  grid-column-gap: 3px;
   align-items: center;
   justify-items: center;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
   cursor: auto;
 }
-.toggle-icon {
-  justify-self: center;
+.item_2{
+  display: grid;
+  grid-template-columns: 2fr 3fr 4fr;
+  grid-column-gap: 4px;
+  text-align: center;
+  align-items: center;
 }
+.item_4 {
+  display: grid;
+  text-align: center;
+  grid-template-columns: 5fr 3fr;
+  grid-column-gap: 4px;
+  align-items: center;
+}
+.item_5{
+  display: grid;
+  text-align: center;
+  grid-template-columns: 2fr 3fr;
+  align-items: center;
+}
+.selected{
+ border: solid 2px steelblue;
+ border-radius: 6px;
+ border-top: none;
+}
+
 </style>

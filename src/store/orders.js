@@ -6,7 +6,46 @@ import moment from 'moment'
 export default {
   state: {
     orders: [],
-    tmpOrdersArray: []
+    tmpOrdersArray: [
+        {
+          _id: '01',
+          selected: true,
+          status: 'Новый',
+          searchCar: true,
+          method: 'Авто',
+          num: 12334,
+          numEDI: 'YB123321133',
+          dateShipping: new Date('2019-02-15'),
+          dateDelivery: new Date('2019-02-17'),
+          //timeDelivery: new Date('08:34'),
+          customer: 'Торговый дом Перекресток',
+          address: 'Волгоградская область, с.Ерзовка, какой-то склад с непонятным и очень длинным названием',
+          way: 'FM (РЦ Ерзовка) чт, сб',
+          weight: 12.3,
+          pltCount: 21,
+          thermal: 16,
+          manager: 'Тараканова Евгения Батьковна'
+        },
+         {
+          _id: '02',
+          selected: true,
+          status: 'Новый',
+          searchCar: true,
+          method: 'Авто',
+          num: 12213,
+          numEDI: 'YB12332323f23',
+          dateShipping: new Date('2019-02-16'),
+          dateDelivery: new Date('2019-02-19'),
+         // timeDelivery: new Date('08:34'),
+          customer: 'Тандер АО',
+          address: 'Пензенкая область, с. Саловка, терминал 323-231',
+          way: 'Пенза (РЦ Тандер)',
+          weight: 18.3,
+          pltCount: 33,
+          thermal: 0,
+          manager: 'Глебова Наталья'
+        }      
+    ]
   },
   mutations: {
     toggleSelectorOrders (state, payload) {
@@ -18,7 +57,7 @@ export default {
     },
     toggleSelectorTmpOrder (state, payload) {
       state.tmpOrdersArray.map(o => {
-        if (o.number === payload) o.selected = !o.selected
+        if (o._id === payload) o.selected = !o.selected
       })
     },
     addNewOrder (state, payload) {
@@ -96,6 +135,9 @@ export default {
     },
     tmpOrdersArray (state) {
       return state.tmpOrdersArray
+    },
+    testArray (state) {
+      return state.testArray
     },
     tmpOrderByNumber: state => number => state.tmpOrdersArray.find(item => item.number === number)
   }
