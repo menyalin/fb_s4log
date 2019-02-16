@@ -9,7 +9,7 @@ export default {
     tmpOrdersArray: [
         {
           _id: '01',
-          selected: true,
+          selected: false,
           status: 'Новый',
           searchCar: true,
           method: 'Авто',
