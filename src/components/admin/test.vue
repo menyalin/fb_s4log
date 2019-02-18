@@ -2,6 +2,7 @@
     <v-container fluid pa-0> 
       <v-layout row wrap>
         <v-flex>
+          <app-tmp-order-filters/>
           <app-tmp-order-row :header='true'/>
           <app-tmp-order-row v-for="order in tmpOrdersArray" :key="order._id" :order='order'/>
          
@@ -12,11 +13,13 @@
 
 <script>
 import tmpOrderRow from './tmpOrderRow.vue'
+import appTmpOrderFilters from './tmpOrderFilters.vue'
 
 export default {
   name: "test",
   components: {
-    appTmpOrderRow: tmpOrderRow
+    appTmpOrderRow: tmpOrderRow,
+    appTmpOrderFilters
   },
   data() {
     return {
@@ -28,7 +31,7 @@ export default {
   },
   computed: {
     tmpOrdersArray() {
-      return this.$store.getters.tmpOrdersArray;
+      return this.$store.getters.tmpOrdersArray || null
     }
   }
 };

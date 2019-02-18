@@ -1,6 +1,7 @@
 import db from '../db'
 import XLSX from 'xlsx'
 import moment from 'moment'
+import store from './index'
 
 
 export default {
@@ -10,7 +11,7 @@ export default {
         {
           _id: '01',
           selected: false,
-          status: 'Новый',
+          status: 'new',
           searchCar: true,
           method: 'Авто',
           num: 12334,
@@ -28,8 +29,8 @@ export default {
         },
          {
           _id: '02',
-          selected: true,
-          status: 'Новый',
+          selected: false,
+          status: 'changed',
           searchCar: true,
           method: 'Авто',
           num: 12213,
@@ -44,10 +45,47 @@ export default {
           pltCount: 33,
           thermal: 0,
           manager: 'Глебова Наталья'
-        }      
-    ]
+        },
+        {
+          _id: '03',
+          selected: true,
+          status: 'changed',
+          searchCar: true,
+          method: 'Авто',
+          num: 124562,
+          numEDI: '12232346YB',
+          dateShipping: new Date('2019-02-21'),
+          dateDelivery: new Date('2019-02-23'),
+          //timeDelivery: new Date('08:34'),
+          customer: 'Союз Святого Ионна Воина',
+          address: 'Санкт-Петербург, ЦР Верного с очень длинным названрием',
+          way: 'ВОСТОК (РЦ Верный) чт, вс',
+          weight: 18.3,
+          pltCount: 32,
+          thermal: 0,
+          manager: 'Гераськина Ольга'
+        },      
+    ],
+    tmpOrderStatus : {
+      new: 'Новый',
+      old: 'Старый',
+      changed: 'Изменен'
+    },
+    tmpOrderFilters: {
+      statusFilter: ['new', 'old'],
+      testFilter: 'unUsed'
+    }
   },
   mutations: {
+    tmpOrderFiltersUpdate (state, payload) {
+      Object.assign(state.tmpOrderFilters, payload) 
+    },
+    unSelectAllTmpOrder () {
+      store.getters.tmpOrdersArray.forEach(item => item.selected = false)
+    },
+    selectAllTmpOrder ({getters}) {
+      store.getters.tmpOrdersArray.forEach(item => item.selected = true)
+    },
     toggleSelectorOrders (state, payload) {
       state.orders.map(o => {
         if (o.orderNumber === payload) {
@@ -134,10 +172,29 @@ export default {
       return state.orders
     },
     tmpOrdersArray (state) {
+      const filters = state.tmpOrderFilters
       return state.tmpOrdersArray
+      .filter(item => filters.statusFilter.indexOf(item.status) !== -1)
     },
-    testArray (state) {
-      return state.testArray
+    tmpOrderSelectedState (state) {
+      const filters = state.tmpOrderFilters;
+      const array = state.tmpOrdersArray.filter(item => filters.statusFilter.indexOf(item.status) !== -1)
+      if (array.length) {
+        let selected = 0;
+        for (let i = 0; i < array.length; i++) {
+          if ( array[i].selected ) selected++;
+        }
+        if (selected === 0) return 'check_box_outline_blank'
+        if (selected ===  array.length) return 'check_box'
+        else return 'indeterminate_check_box'
+      }
+      else return 'check_box_outline_blank'
+    },  
+    tmpOrderStatus (state) {
+      return state.tmpOrderStatus
+    },
+    tmpOrderFilters (state) {
+      return state.tmpOrderFilters
     },
     tmpOrderByNumber: state => number => state.tmpOrdersArray.find(item => item.number === number)
   }
