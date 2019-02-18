@@ -3,7 +3,6 @@ import XLSX from 'xlsx'
 import moment from 'moment'
 import store from './index'
 
-
 export default {
   state: {
     orders: [],
@@ -12,7 +11,7 @@ export default {
           _id: '01',
           selected: false,
           status: 'new',
-          searchCar: true,
+          searchCar: false,
           method: 'Авто',
           num: 12334,
           numEDI: 'YB123321133',
@@ -64,7 +63,7 @@ export default {
           pltCount: 32,
           thermal: 0,
           manager: 'Гераськина Ольга'
-        },      
+        },
     ],
     tmpOrderStatus : {
       new: 'Новый',
@@ -72,18 +71,19 @@ export default {
       changed: 'Изменен'
     },
     tmpOrderFilters: {
-      statusFilter: ['new', 'old'],
+      statusFilter: ['new', 'old', 'changed'],
+      searchCarFilter : 'all',
       testFilter: 'unUsed'
     }
   },
   mutations: {
     tmpOrderFiltersUpdate (state, payload) {
-      Object.assign(state.tmpOrderFilters, payload) 
+      Object.assign(state.tmpOrderFilters, payload)
     },
     unSelectAllTmpOrder () {
       store.getters.tmpOrdersArray.forEach(item => item.selected = false)
     },
-    selectAllTmpOrder ({getters}) {
+    selectAllTmpOrder () {
       store.getters.tmpOrdersArray.forEach(item => item.selected = true)
     },
     toggleSelectorOrders (state, payload) {
@@ -175,10 +175,13 @@ export default {
       const filters = state.tmpOrderFilters
       return state.tmpOrdersArray
       .filter(item => filters.statusFilter.indexOf(item.status) !== -1)
+      .filter(item => {
+        if (state.tmpOrderFilters.searchCarFilter === 'all') return true
+        else return item.searchCar
+      })
     },
-    tmpOrderSelectedState (state) {
-      const filters = state.tmpOrderFilters;
-      const array = state.tmpOrdersArray.filter(item => filters.statusFilter.indexOf(item.status) !== -1)
+    tmpOrderSelectedState () {
+      const array = store.getters.tmpOrdersArray
       if (array.length) {
         let selected = 0;
         for (let i = 0; i < array.length; i++) {
@@ -189,7 +192,7 @@ export default {
         else return 'indeterminate_check_box'
       }
       else return 'check_box_outline_blank'
-    },  
+    },
     tmpOrderStatus (state) {
       return state.tmpOrderStatus
     },
