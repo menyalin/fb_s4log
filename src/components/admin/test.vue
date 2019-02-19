@@ -3,6 +3,7 @@
       <v-layout row wrap>
         <v-flex>
           <app-tmp-order-filters/>
+          <v-divider/>
           <app-tmp-order-row :header='true'/>
           <app-tmp-order-row v-for="order in tmpOrdersArray" :key="order._id" :order='order'/>
          

@@ -62,7 +62,7 @@ export default {
           weight: 18.3,
           pltCount: 32,
           thermal: 0,
-          manager: 'Гераськина Ольга'
+          manager: 'Адаптер ЭДО'
         },
     ],
     tmpOrderStatus : {
@@ -170,6 +170,9 @@ export default {
   getters: {
     orders (state) {
       return state.orders
+    },
+    fullTmpOrderArray (state) {
+      return state.tmpOrdersArray
     },
     tmpOrdersArray (state) {
       const filters = state.tmpOrderFilters
