@@ -1,17 +1,6 @@
 <template>
-
   <v-container fluid pa-1 >
-
     <v-layout row wrap class="filters-block">
-      <v-btn
-        color="primary"
-        fab
-        dark
-        small
-        bottom
-      >
-        <v-icon>expand_less</v-icon>
-      </v-btn>
       <v-flex md2 pa-1>
         <v-select
           :items='statuses'
@@ -38,11 +27,9 @@
                   multiple
                   v-model="managerFilter"
                   clearable
-
+                  @change="changeManagerFilter"
         />
-
       </v-flex>
-
     </v-layout>
   </v-container>
 </template>
@@ -55,7 +42,6 @@ export default {
       statusFilter: [],
       searchCar: null,
       managerFilter: null
-
     }
   },
   created () {
@@ -68,8 +54,6 @@ export default {
     },
     managers () {
       return [... new Set(this.$store.getters.fullTmpOrderArray.map(item => item.manager))]
-
-
     }
   },
   methods: {
@@ -78,6 +62,9 @@ export default {
     },
     changeSearchCarFilter () {
       this.$store.commit('tmpOrderFiltersUpdate', {searchCarFilter: this.searchCar})
+    },
+    changeManagerFilter () {
+      this.$store.commit('tmpOrderFiltersUpdate', {managerFilter: this.managerFilter})
     }
   }
 };

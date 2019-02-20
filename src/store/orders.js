@@ -73,7 +73,8 @@ export default {
     tmpOrderFilters: {
       statusFilter: ['new', 'old', 'changed'],
       searchCarFilter : 'all',
-      testFilter: 'unUsed'
+      testFilter: 'unUsed',
+      managerFilter: []
     }
   },
   mutations: {
@@ -181,6 +182,10 @@ export default {
       .filter(item => {
         if (state.tmpOrderFilters.searchCarFilter === 'all') return true
         else return item.searchCar
+      })
+      .filter(item => {
+        if (!state.tmpOrderFilters.managerFilter.length ) return true
+        else return filters.managerFilter.indexOf(item.manager) !==-1
       })
     },
     tmpOrderSelectedState () {
